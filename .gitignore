@@ -1,0 +1,26 @@
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+
+# IDE files
+.idea/
+.vscode/
+*.iml
+
+# Python caches and build output
+__pycache__/
+*.py[cod]
+*.egg-info/
+build/
+dist/
+
+# Jupyter and temporary files
+.ipynb_checkpoints/
+*.log
+*.tmp
+*.bak
+*.swp
+~$*
+.DS_Store
+Thumbs.db
