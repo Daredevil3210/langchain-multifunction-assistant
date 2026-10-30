@@ -1,46 +1,73 @@
-# LangChain 多功能智能助手
+# LangChain Multifunction Assistant
 
-这是一个独立的 Jupyter Notebook 示例，使用 LangChain Agent 将多个 Python 工具组合成一个中文多功能助手。
+English | [简体中文](README.zh.md)
 
-Notebook：`06-实战：多功能智能助手.ipynb`
+A Chinese-language assistant in a single Jupyter Notebook, demonstrating how LangChain's `create_agent` selects Python tools and maintains conversation history. It combines DeepSeek with five tools for weather, arithmetic, time, currency conversion, and information lookup.
 
-## 支持的功能
+This is an educational example. Weather, exchange rates, product listings, and news are embedded sample data, even where tool descriptions use the word “real-time.” Only the date/time tool reads the local system clock.
 
-- 城市天气查询（示例数据）
-- 数学表达式计算
-- 当前时间、日期和星期查询
-- 货币转换（示例汇率）
-- 产品与新闻信息搜索（示例数据）
+## What the notebook demonstrates
 
-## 安装依赖
+- `get_weather`: sample conditions for Beijing, Shanghai, Shenzhen, Chengdu, Hangzhou, and Guangzhou.
+- `calculator`: arithmetic and selected mathematical functions, including `sqrt`, `pow`, `abs`, trigonometric functions, and logarithms.
+- `get_time_info`: current local time, today's date, tomorrow, yesterday, and weekday.
+- `convert_currency`: conversion among CNY, USD, EUR, GBP, JPY, and HKD using a fixed rate dictionary.
+- `search_info`: keyword matching against sample product and news dictionaries; no web search.
+- `SmartAssistant`: a Chinese system prompt, tool registration, agent invocation, conversation history, and reset behavior.
+
+## Requirements and setup
+
+Use a Python environment compatible with the installed LangChain and Jupyter packages. The repository has no pinned dependency file, lockfile, or declared Python version, so it does not define a reproducible environment.
 
 ```bash
-pip install langchain langchain-deepseek python-dotenv rich jupyter
+git clone https://github.com/Daredevil3210/langchain-multifunction-assistant.git
+cd langchain-multifunction-assistant
+python -m pip install langchain langchain-deepseek python-dotenv rich jupyter
 ```
 
-## 配置 DeepSeek
+Set these environment variables before starting Jupyter, or create a local `.env` in the repository directory:
 
-在运行 Notebook 前设置环境变量，或在项目目录创建 `.env`：
-
-```env
-DEEPSEEK_API_KEY=your_api_key_here
+```dotenv
+DEEPSEEK_API_KEY=replace_with_your_private_key
 DEEPSEEK_BASE_URL=https://api.deepseek.com
 ```
 
-不要提交包含真实 API Key 的 `.env` 文件。
+The initialization cell currently selects `deepseek-v4-flash` and sends `thinking.type=disabled`. This is the notebook's configured identifier, not a guarantee of availability for every account. If necessary, edit that cell to select a model that supports the tool calls and request parameters used here. `load_dotenv()` uses its default behavior: existing process environment values take precedence over `.env`.
 
-## 运行
+Keep the real `.env` local. Model-backed examples send prompts and tool results to the configured service and may incur API charges.
+
+## Run
 
 ```bash
 jupyter notebook
 ```
 
-打开 `06-实战：多功能智能助手.ipynb`，按顺序运行各个单元。Notebook 最后会先运行演示问题，然后进入交互模式；输入 `quit` 退出，输入 `reset` 清空对话历史。
+Open [`06-实战：多功能智能助手.ipynb`](06-实战：多功能智能助手.ipynb), select the environment where you installed the packages, and run the cells in order. The final cell runs four demonstration questions, resets the conversation, and opens an input loop.
 
-## 说明
+- Enter `quit` to exit.
+- Enter `reset` to clear the assistant's message history.
 
-本示例中的天气、汇率、产品和新闻数据均为代码内置的演示数据，并不代表实时信息。数学工具使用受限的表达式环境，生产环境仍应使用更严格的计算器实现。
+Example prompts:
 
-## 许可证
+```text
+北京今天天气怎么样？
+帮我算一下 (25 + 17) * 3
+现在几点了？
+100 美元等于多少人民币？
+```
 
-[MIT](LICENSE)
+## Repository structure
+
+- `06-实战：多功能智能助手.ipynb`: model initialization, tool definitions, `SmartAssistant`, demos, and interactive entry point.
+- `README.md` / `README.zh.md`: English and Chinese documentation.
+- `LICENSE`: MIT license and tutorial-contributor copyright notice.
+
+## Checks and limitations
+
+The demonstration prompts are manual examples, not an automated test suite. The repository provides no test runner configuration; no execution or API validation is claimed by this documentation update.
+
+The calculator uses Python `eval` with disabled built-ins and an allowlist of functions. This is a teaching implementation rather than a hardened expression parser; do not expose it to untrusted expressions. Conversation history exists in the `SmartAssistant` instance and has no persistent storage. Mock lookup data can become outdated and should not be treated as current information.
+
+## Learning context and license
+
+The notebook identifies itself as a LangChain 1.2 practical exercise. The repository retains its [MIT License](LICENSE), including `Copyright (c) 2026 LangChain 1.2 Tutorial contributors`.
